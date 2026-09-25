@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="form-container">
+        <h1>Cadastre-se</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mensagem {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('cadastrar_usuario') }}" method="post">
+            <label for="nome">Nome completo</label>
+            <input type="text" name="nome" id="nome" placeholder="Ex.: Sofia de Souza Boregio" required>
+
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email" placeholder="Ex.: usuario@email.com" required>
+
+            <label for="senha">Digite sua senha:</label>
+            <input type="password" name="senha" id="senha" placeholder="Digite a senha dentro dos requisitos" required>
+
+            <div>
+                <p>Requisitos senha:</p>
+                <p class="req-caracteres">Mínimo 8 caracteres</p>
+                <p class="req-caracteres">Mínimo 1 letra maiúscula</p>
+                <p class="req-caracteres">Mínimo 1 letra minúscula</p>
+                <p class="req-caracteres">Mínimo 1 número</p>
+                <p class="req-caracteres">Mínimo 1 caractere especial</p>
+
+            </div>
+
+             <div class="botoes">
+                <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
+                <button type="submit" class="btn-salvar">Cadastrar</button>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+    function validar_senha(senha) {
+        let min_caractere = false
+        let min_upper = false
+        let min_lower = false
+        let min_num = false
+        let min_caractere_esp = false
+
+        if (senha.length >= 8) {
+            min_caractere = true
+        }
+
+        for (let caractere of senha) {
+            if (/[A-Z]/.test(caractere)) {
+                min_upper = true
+            }
+
+            if (/[a-z]/.test(caractere)) {
+                min_lower = true
+            }
+
+            if (/[0-9]/.test(caractere)) {
+                min_num = true
+            }
+
+            if (/[^A-Za-z0-9]/.test(caractere)) {
+                min_caractere_esp = true
+            }
+        }
+
+        if (
+            min_caractere == true &&
+            min_upper == true &&
+            min_lower == true &&
+            min_num == true &&
+            min_caractere_esp == true
+        ) {
+            let validacao = true
+            return validacao
+        } else {
+            let validacao = false
+            return validacao
+        }
+    }
+
+    function verificar_senha() {
+    let senha = document.querySelector("#senha").value
+
+    if (validar_senha(senha) == false) {
+        alert("A senha não atende aos requisitos!")
+        return false
+    }
+
+    return true
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca Virtual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="form-container">
+    <h1>Login</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mensagem {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('login') }}" method="post">
+        <label for="nome">Nome completo</label>
+        <input type="text" name="nome" id="nome" placeholder="Ex.: Sofia de Souza Boregio" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" name="email" id="email" placeholder="Ex.: usuario@email.com" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+
+        <button type="submit" class="btn-salvar btn-largo">Entrar</button>
+        <a href="{{ url_for('cadastrar_usuario') }}" class="link-cadastro">Ainda não tem uma conta? Cadastre-se</a>
+    </form>
+</main>
+</body>
+</html>

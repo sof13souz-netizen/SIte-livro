@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="container">
+    <div class="topo">
+    <h1>Lista de Livros</h1>
+        <div class="botoes-topo">
+            <a href="{{ url_for('novo') }}" class="btn-adicionar">+ Adicionar Livro</a>
+            <a href="{{ url_for('relatorio') }}" class="btn-relatorio">Relatório PDF</a>
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mensagem {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Ano de Publicação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro[0] }}</td>
+                        <td>{{ livro[1] }}</td>
+                        <td>{{ livro[2] }}</td>
+                        <td>{{ livro[3] }}</td>
+                        <td class="acoes">
+                            <a href="{{ url_for('editar', id=livro[0]) }}" class="btn-editar">Editar</a>
+                            <a href="{{ url_for('confirmar_delete', id=livro[0]) }}" class="btn-deletar">Excluir</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="sem-registros">Nenhum livro cadastrado.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
